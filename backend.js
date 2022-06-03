@@ -6,7 +6,6 @@ const util = require('util')
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'mysqldb',
-  port: process.env.BD_PORT || '3306',
   user: process.env.DB_USER || 'applicationuser',
   password: process.env.DB_PASS || 'applicationuser',
   database: process.env.DB_NAME || 'movie_db'
