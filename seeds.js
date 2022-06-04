@@ -5,12 +5,23 @@ async function main () {
   try {
     const pool = mysql.createPool({
       connectionLimit: 10,
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'applicationuser',
-      password: process.env.DB_PASS || 'applicationuser',
-      database: process.env.DB_NAME || 'movie_db'
+      host: process.env.DB_HOST,
+      port:3306,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
     })
+
+    console.log(process.env.DB_HOST)
+    console.log(process.env.DB_USER)
+    console.log(process.env.DB_PASS)
+    console.log(process.env.DB_NAME)
+
     pool.query = util.promisify(pool.query)
+
+    const createPublicationsTable = 'CREATE TABLE `publications` (`name` VARCHAR(255),`avatar` VARCHAR(255));'
+
+    await pool.query(createPublicationsTable)
 
     const publicationsQuery = 'INSERT INTO publications (name, avatar) VALUES ?'
     const publicationsValues = [
@@ -24,17 +35,25 @@ async function main () {
     ]
     await pool.query(publicationsQuery, [publicationsValues])
 
+    const createReviewersTable = 'CREATE TABLE `reviewers` (`name` VARCHAR(255),`publication` VARCHAR(255),`avatar` VARCHAR(255));'
+
+    await pool.query(createReviewersTable)
+
     const reviewersQuery = 'INSERT INTO reviewers (name, publication, avatar) VALUES ?'
     const reviewersValues = [
-      ['Robert Smith', 'The Daily Reviewer', 'https://s3.amazonaws.com/uifaces/faces/twitter/angelcolberg/128.jpg'],
-      ['Chris Harris', 'International Movie Critic', 'https://s3.amazonaws.com/uifaces/faces/twitter/bungiwan/128.jpg'],
-      ['Janet Garcia', 'MoviesNow', 'https://s3.amazonaws.com/uifaces/faces/twitter/grrr_nl/128.jpg'],
-      ['Andrew West', 'MyNextReview', 'https://s3.amazonaws.com/uifaces/faces/twitter/d00maz/128.jpg'],
-      ['Mindy Lee', 'Movies n\' Games', 'https://s3.amazonaws.com/uifaces/faces/twitter/laurengray/128.jpg'],
-      ['Martin Thomas', 'TheOne', 'https://s3.amazonaws.com/uifaces/faces/twitter/karsh/128.jpg'],
-      ['Anthony Miller', 'ComicBookHero.com', 'https://s3.amazonaws.com/uifaces/faces/twitter/9lessons/128.jpg']
+      ['Robert Smith', 'The Daily Reviewer', 'https://img.wattpad.com/useravatar/sacullem.128.897966.jpg'],
+      ['Chris Harris', 'International Movie Critic', 'https://cachedimages.podchaser.com/256x256/aHR0cHM6Ly9jcmVhdG9yLWltYWdlcy5wb2RjaGFzZXIuY29tL2M5ZGFjZjljMTIyNjk0MDFhOGJhMzFmNmRiOGI5NDcxLnBuZw%3D%3D/aHR0cHM6Ly93d3cucG9kY2hhc2VyLmNvbS9pbWFnZXMvbWlzc2luZy1pbWFnZS5wbmc%3D'],
+      ['Janet Garcia', 'MoviesNow', 'https://th.bing.com/th/id/OIP.LqyTMeVJuc6wlE-iP-2T6AAAAA?pid=ImgDet&rs=1'],
+      ['Andrew West', 'MyNextReview', 'https://static.wikia.nocookie.net/deadofsummerfreeform/images/c/c0/Andrew_J._West.png'],
+      ['Mindy Lee', 'Movies n\' Games', 'https://th.bing.com/th/id/OIP.UHXvgDMC8LnAX-fLd50sMAAAAA?pid=ImgDet&w=143.25259515570934&h=180&c=7'],
+      ['Martin Thomas', 'TheOne', 'https://lh3.googleusercontent.com/-o7G2uoShpEw/YX44nOdtCTI/AAAAAAAAo3E/wox3Mbe2Nloj5MWmKvAGGgN_nj6_AtBSQCNcBGAsYHQ/w700/image.png'],
+      ['Anthony Miller', 'ComicBookHero.com', 'https://madden-assets-cdn.pulse.ea.com/madden21/portraits/256/8992.png']
     ]
     await pool.query(reviewersQuery, [reviewersValues])
+
+    const createMoviesTable = 'CREATE TABLE `movies` (`title` VARCHAR(255),`release_year` VARCHAR(255),`score` VARCHAR(255), `reviewer` VARCHAR(255),`publication` VARCHAR(255));'
+
+    await pool.query(createMoviesTable)
 
     const moviesQuery = 'INSERT INTO movies (title, release_year, score, reviewer, publication) VALUES ?'
     const moviesValues = [
