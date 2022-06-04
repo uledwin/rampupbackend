@@ -1,11 +1,13 @@
 name: 'Backend CI Pipeline'
 
 on:
-  pull_request:
-    branches:  
-    - dev
-    - uat
-    - main
+  push:
+    branches: feature
+#  pull_request:
+#    branches:  
+#    - dev
+#    - uat
+#    - main
     
 permissions:
   contents: read
