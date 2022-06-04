@@ -3,16 +3,16 @@ name: 'Backend CI Pipeline'
 on:
   pull_request:
     branches:  
-    - backend_dev
-    - backend_uat
-    - backend_main
+    - dev
+    - uat
+    - main
     
 permissions:
   contents: read
 
 jobs:
-  terraform:
-    name: 'Terraform CI Pipeline'
+  Docker:
+    name: 'Backend CI Pipeline'
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: 97f36c8f-940d-4c8c-813e-e9af0f248f08
@@ -31,4 +31,16 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
+    
+    - name: ACR build
+      id: acr
+      uses: azure/acr-build@v1
+      with:
+        registry: eultengodevacr01
+        repository: backend
+        image: image
+        git_access_token: ${{ secrets.git_access_token }}
+        folder: .
+        dockerfile: Dockerfile
+        branch: feature
 
