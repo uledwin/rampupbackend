@@ -35,7 +35,7 @@ jobs:
       run: echo "$GITHUB_CONTEXT"
     
     - name: ACR build
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
     - run: |
         az acr login --name eultengodevacr01.azurecr.io
         docker build -t eultengodevacr01.azurecr.io\backend:${{ github.sha }} -f Dockerfile .
