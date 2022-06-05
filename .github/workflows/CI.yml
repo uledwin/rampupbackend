@@ -36,10 +36,15 @@ jobs:
     
     - name: ACR build
       uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+        login-server: yourACRname.azurecr.io
+        username: ${{ env.ARM_CLIENT_ID }}
+        password: ${{secrets.TF_ARM_CLIENT_SECRET}}
+
     - run: |
-        az acr login --name eultengodevacr01.azurecr.io
-        docker build -t eultengodevacr01.azurecr.io\backend:${{ github.sha }} -f Dockerfile .
+        docker build . -t eultengodevacr01.azurecr.io\backend:${{ github.sha }} -f Dockerfile
         docker push eultengodevacr01.azurecr.io\backend:${{ github.sha }}
-        
+
       
       
