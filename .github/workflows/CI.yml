@@ -35,14 +35,11 @@ jobs:
       run: echo "$GITHUB_CONTEXT"
     
     - name: ACR build
-      id: acr
-      uses: azure/acr-build@v1
-      with:
-        registry: eultengodevacr01
-        repository: backend
-        image: image
-        git_access_token: ${{ secrets.git_access_token }}
-        folder: .
-        dockerfile: Dockerfile
-        branch: feature
-
+    - uses: actions/checkout@v2
+    - run: |
+        az acr login --name eultengodevacr01.azurecr.io
+        docker build -t eultengodevacr01.azurecr.io\backend:${{ github.sha }} -f Dockerfile .
+        docker push eultengodevacr01.azurecr.io\backend:${{ github.sha }}
+        
+      
+      
