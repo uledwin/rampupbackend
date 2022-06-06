@@ -1,48 +1,20 @@
-name: 'Backend CI Pipeline'
 
-on:
-  push:
-    branches: feature
-#  pull_request:
-#    branches:  
-#    - dev
-#    - uat
-#    - main
-    
-permissions:
-  contents: read
+# File: .github/workflows/workflow.yml
+
+on: [push]
+
+name: AzureLoginSample
 
 jobs:
-  Docker:
-    name: 'Backend CI Pipeline'
+
+  build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      ARM_CLIENT_ID: 97f36c8f-940d-4c8c-813e-e9af0f248f08
-      ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
-      ARM_SUBSCRIPTION_ID: 1afd90be-5a70-487b-83b4-88571e23e1ee
-      ARM_TENANT_ID: 0b3fc178-b730-4e8b-9843-e81259237b77
-      
-
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
-
     steps:
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
     
-    - name: ACR build
-      uses: actions/checkout@v2
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
     - run: |
-        docker logout
-        az login --service-principal -u ${{ env.ARM_CLIENT_ID }} -p ${{ env.ARM_CLIENT_SECRET }} --tenant ${{ env.ARM_TENANT_ID }} 
-        az acr login --name eultengodevacr01.azurecr.io
-        az account set --subscription ${{ env.ARM_SUBSCRIPTION_ID }}
-        docker build . -t eultengodevacr01.azurecr.io\backend:${{ github.sha }} -f Dockerfile
-        docker push eultengodevacr01.azurecr.io\backend:${{ github.sha }}
-
-      
-      
+        az webapp list --query "[?state=='Running']"
+        az account show
