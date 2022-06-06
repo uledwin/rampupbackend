@@ -37,6 +37,7 @@ jobs:
     - name: ACR build
       uses: actions/checkout@v2
     - run: |
+        docker logout
         az login --service-principal -u ${{ env.ARM_CLIENT_ID }} -p ${{ env.ARM_CLIENT_SECRET }} --tenant ${{ env.ARM_TENANT_ID }} 
         az acr login --name eultengodevacr01.azurecr.io
         az account set --subscription ${{ env.ARM_SUBSCRIPTION_ID }}
