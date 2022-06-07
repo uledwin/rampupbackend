@@ -25,3 +25,10 @@ jobs:
     - run: |
           docker build . -t eultengodevacr01.azurecr.io/backend:${{ github.sha }}
           docker push eultengodevacr01.azurecr.io/backend:${{ github.sha }}
+          
+    - name: Container image scan
+      uses: Azure/container-scan@v0.1
+      with:
+        image-name: yourACRname.azurecr.io/appdb:${{ github.sha }}
+        username: 97f36c8f-940d-4c8c-813e-e9af0f248f08
+        password: ${{ secrets.TF_ARM_CLIENT_SECRET }}
