@@ -11,10 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
+    - uses: actions/checkout@v2
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - uses: azure/docker-login@v1
+      with:
+        login-server: eultengodevacr01.azurecr.io
+        username: 97f36c8f-940d-4c8c-813e-e9af0f248f08
+        password: ${{ secrets.TF_ARM_CLIENT_SECRET }}
     
     - run: |
-        az webapp list --query "[?state=='Running']"
-        az account show
+          docker build . -t eultengodevacr01.azurecr.io/backend:${{ github.sha }}
+          docker push eultengodevacr01.azurecr.io/backend:${{ github.sha }}
