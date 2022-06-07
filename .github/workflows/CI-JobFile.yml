@@ -24,7 +24,7 @@ jobs:
     
     - run: |
           docker build . -t eultengodevacr01.azurecr.io/backend-job:${{ github.sha }} -f Dockerfile.job
-          docker push eultengodevacr01.azurecr.io/backend:${{ github.sha }}
+          docker push eultengodevacr01.azurecr.io/backend-job:${{ github.sha }}
           
     - name: Container image scan
       uses: Azure/container-scan@v0.1
