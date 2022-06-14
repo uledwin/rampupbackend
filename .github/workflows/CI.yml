@@ -32,5 +32,5 @@ jobs:
         username: 97f36c8f-940d-4c8c-813e-e9af0f248f08
         password: ${{ secrets.TF_ARM_CLIENT_SECRET }}
     
-    -run: |
+    - run: |
          docker push eultengodevacr01.azurecr.io/backend:${{ github.sha }}
