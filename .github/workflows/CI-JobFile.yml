@@ -25,6 +25,25 @@ jobs:
         login-server: eultengodevacr01.azurecr.io
         username: 97f36c8f-940d-4c8c-813e-e9af0f248f08
         password: ${{ secrets.TF_ARM_CLIENT_SECRET }}
+
+    - name:  'Automated Version Bump'
+      id: version-bump
+      uses:  'phips28/gh-action-bump-version@master'
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      with:
+        minor-wording:  'add,Adds,new'
+        major-wording:  'MAJOR,cut-major'
+        patch-wording:  'patch,fixes,fix'     # Providing patch-wording will override commits
+                                              # defaulting to a patch bump.
+        rc-wording:     'RELEASE,alpha'
+
+
+    - name: Output Step                             # Optional: Prints the new version
+      env:
+        NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+      run: echo "new tag $NEW_TAG"
+
     
     - run: |
           docker build . -t eultengodevacr01.azurecr.io/backend-job:${{ github.ref_name }} -f Dockerfile.job
