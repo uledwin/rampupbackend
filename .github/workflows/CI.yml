@@ -1,7 +1,7 @@
 
 # File: .github/workflows/workflow.yml
 
-on: [pull_request]
+on: [push]
 
 name: CI Backend App
 
