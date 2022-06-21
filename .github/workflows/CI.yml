@@ -73,6 +73,6 @@ jobs:
           sed -i 's/image: uledwin\/backend:..*/image: uledwin\/backend:${{ steps.version-bump.outputs.newTag }}/' overlays/dev/backend.deployment.yml
           cat overlays/dev/backend.deployment.yml
           git commit -am "Update Version of Docker Image"
-          git push origin feature
+          git push https://uledwin:${{ secrets.API_TOKEN_GITHUB }}@github.com/uledwin/rampupk8sdeployment.git feature
           
         
