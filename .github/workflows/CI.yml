@@ -69,6 +69,8 @@ jobs:
     - run: |
           git clone https://github.com/uledwin/rampupk8sdeployment.git
           cd rampupk8sdeployment/
+          git config user.name github-image-updater
+          git config user.email noreply@imageupdater.io
           git checkout --force feature
           sed -i 's/image: uledwin\/backend:..*/image: uledwin\/backend:${{ steps.version-bump.outputs.newTag }}/' overlays/dev/backend.deployment.yml
           cat overlays/dev/backend.deployment.yml
