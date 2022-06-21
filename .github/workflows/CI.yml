@@ -58,7 +58,7 @@ jobs:
     - run: |
          docker push eultengodevacr01.azurecr.io/backend:${{ steps.version-bump.outputs.newTag }}
   
-    - name:  Upgrade Deployment
+    - name:  Upgrade Deployment backend Image
       uses: actions/checkout@v2.4.2
       with:
          repository: uledwin/rampupk8sdeployment

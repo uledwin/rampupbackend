@@ -58,3 +58,22 @@ jobs:
 
     - run: |
           docker push eultengodevacr01.azurecr.io/backend-job:${{ steps.version-bump.outputs.newTag }}
+
+    - name:  Upgrade Deployment Job Image
+      uses: actions/checkout@v2.4.2
+      with:
+         repository: uledwin/rampupk8sdeployment
+         ref: feature
+         token: ${{ github.token }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - run: |
+          git clone https://github.com/uledwin/rampupk8sdeployment.git
+          cd rampupk8sdeployment/
+          git config user.name github-image-updater
+          git config user.email noreply@imageupdater.io
+          git checkout --force feature
+          sed -i 's/image: uledwin\/backend-job:..*/image: uledwin\/backend-job:${{ steps.version-bump.outputs.newTag }}/' overlays/dev/backend.deployment.yml
+          cat overlays/dev/backend.job.yml
+          git commit -am "Update Version of Docker Image"
+          git push https://uledwin:${{ secrets.API_TOKEN_GITHUB }}@github.com/uledwin/rampupk8sdeployment.git feature
