@@ -61,7 +61,7 @@ jobs:
     - name:  Upgrade Deployment
       uses: actions/checkout@v2.4.2
       with:
-         repository: https://github.com/uledwin/rampupk8sdeployment.git
+         repository: uledwin/rampupk8sdeployment
          ref: feature
          token: ${{ github.token }}
       env:
