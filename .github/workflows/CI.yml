@@ -72,7 +72,7 @@ jobs:
           git config user.name github-image-updater
           git config user.email noreply@imageupdater.io
           git checkout --force feature
-          sed -i 's/image: uledwin\/backend:..*/image: uledwin\/backend:${{ steps.version-bump.outputs.newTag }}/' overlays/dev/backend.deployment.yml
+          sed -i 's/image: uledwin\/backend:..*/image: eultengodevacr01.azurecr.io\/backend:${{ steps.version-bump.outputs.newTag }}/' overlays/dev/backend.deployment.yml
           cat overlays/dev/backend.deployment.yml
           git commit -am "Update Version of Docker Image"
           git push https://uledwin:${{ secrets.API_TOKEN_GITHUB }}@github.com/uledwin/rampupk8sdeployment.git feature
