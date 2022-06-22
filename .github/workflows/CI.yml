@@ -1,8 +1,9 @@
 
 # File:  .github/workflows/workflow.yml 
 
-on: [push]
-
+#on: [push]
+on: 
+ workflow_dispatch
 name: CI Backend App
 
 jobs:

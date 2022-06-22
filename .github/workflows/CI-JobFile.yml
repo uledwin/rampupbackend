@@ -1,9 +1,9 @@
 
 # File: .github/workflows/workflow.yml 
 
-#on: [push]
-on: 
- workflow_dispatch
+on: [push]
+# on: 
+#  workflow_dispatch
     # inputs:
     # logLevel:
     #   description: 'Log level'     
